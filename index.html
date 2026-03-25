@@ -3,48 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>BTC 波段看板</title>
+<title>BTC 波段看板 v4</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#0a0c10; --surface:#111318; --surface2:#181c24; --border:#1e2430;
-  --accent:#f7931a; --bull:#00c896; --bear:#ff4560; --neutral:#ffd166;
-  --text:#e8eaf0; --muted:#5a6380;
-}
+:root{--bg:#0a0c10;--surface:#111318;--surface2:#181c24;--border:#1e2430;--accent:#f7931a;--bull:#00c896;--bear:#ff4560;--neutral:#ffd166;--text:#e8eaf0;--muted:#5a6380;}
 *{margin:0;padding:0;box-sizing:border-box;}
 html{-webkit-text-size-adjust:100%;}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:'Noto Sans SC',sans-serif;font-size:13px;
-  min-height:100vh;overflow-x:hidden;
-}
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:
-    linear-gradient(rgba(247,147,26,.02) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(247,147,26,.02) 1px,transparent 1px);
-  background-size:40px 40px;
-}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-serif;font-size:13px;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(247,147,26,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(247,147,26,.02) 1px,transparent 1px);background-size:40px 40px;}
 .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:14px;}
 
-/* ── HEADER ── */
-.header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);
-  flex-wrap:wrap;gap:10px;
-}
+/* NAV */
+.nav{display:flex;gap:3px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:0;flex-wrap:wrap;}
+.nav-tab{padding:7px 14px;font-size:11px;cursor:pointer;border-radius:6px 6px 0 0;border:1px solid transparent;border-bottom:none;color:var(--muted);font-family:'Noto Sans SC',sans-serif;background:transparent;transition:all .2s;-webkit-tap-highlight-color:transparent;margin-bottom:-1px;}
+.nav-tab.active{background:var(--surface);border-color:var(--border);color:var(--accent);}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px;}
 .logo{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--accent);letter-spacing:2px;}
 .subtitle{color:var(--muted);font-size:10px;letter-spacing:1px;margin-top:3px;display:flex;align-items:center;gap:6px;}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--bull);display:inline-block;animation:pulse 1.5s ease-in-out infinite;}
 .hdr-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .ts{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
 .pill{background:rgba(247,147,26,.1);border:1px solid rgba(247,147,26,.25);color:var(--accent);font-size:9px;padding:2px 8px;border-radius:3px;font-family:'Space Mono',monospace;}
-.refresh-btn{
-  background:var(--surface2);border:1px solid var(--border);color:var(--text);
-  padding:6px 13px;border-radius:4px;cursor:pointer;font-size:11px;
-  font-family:'Noto Sans SC',sans-serif;display:flex;align-items:center;gap:5px;
-  transition:all .2s;-webkit-tap-highlight-color:transparent;
-}
+.refresh-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 13px;border-radius:4px;cursor:pointer;font-size:11px;font-family:'Noto Sans SC',sans-serif;display:flex;align-items:center;gap:5px;transition:all .2s;-webkit-tap-highlight-color:transparent;}
 .refresh-btn:active{border-color:var(--accent);color:var(--accent);}
 .refresh-btn.loading{opacity:.4;pointer-events:none;}
 .spin{display:inline-block;animation:spin 1s linear infinite;}
@@ -52,77 +35,46 @@ body::before{
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── PRICE HERO ── */
-.price-hero{
-  background:var(--surface);border:1px solid var(--border);border-radius:8px;
-  padding:16px 20px;margin-bottom:12px;display:flex;
-  align-items:center;justify-content:space-between;
-  position:relative;overflow:hidden;flex-wrap:wrap;gap:12px;
-}
-.price-hero::after{
-  content:'₿';position:absolute;right:-8px;top:-20px;font-size:120px;
-  color:rgba(247,147,26,.04);font-family:'Space Mono',monospace;pointer-events:none;
-}
+/* PRICE HERO */
+.price-hero{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;flex-wrap:wrap;gap:12px;}
+.price-hero::after{content:'₿';position:absolute;right:-8px;top:-20px;font-size:120px;color:rgba(247,147,26,.04);font-family:'Space Mono',monospace;pointer-events:none;}
 .price-main{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
 .price-val{font-family:'Space Mono',monospace;font-size:36px;font-weight:700;letter-spacing:-1px;}
 .price-chg{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;}
 .price-meta{display:flex;gap:20px;flex-wrap:wrap;}
-.mi{text-align:right;}
-.mi-l{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
-.mi-v{font-family:'Space Mono',monospace;font-size:12px;}
+.mi{text-align:right;}.mi-l{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}.mi-v{font-family:'Space Mono',monospace;font-size:12px;}
 
-/* ── SIGNAL BANNER ── */
-.sig-banner{
-  border-radius:8px;padding:14px 18px;margin-bottom:14px;
-  display:flex;align-items:center;justify-content:space-between;
-  border:1px solid;transition:all .5s;flex-wrap:wrap;gap:12px;
-  animation:fadeUp .5s ease;
-}
+/* SIGNAL */
+.sig-banner{border-radius:8px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;border:1px solid;transition:all .5s;flex-wrap:wrap;gap:12px;animation:fadeUp .5s ease;}
 .sig-banner.bull{background:rgba(0,200,150,.08);border-color:rgba(0,200,150,.3);}
 .sig-banner.bear{background:rgba(255,69,96,.08);border-color:rgba(255,69,96,.3);}
 .sig-banner.neutral{background:rgba(255,209,102,.08);border-color:rgba(255,209,102,.3);}
 .sig-lbl{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);}
 .sig-txt{font-family:'Space Mono',monospace;font-size:17px;font-weight:700;margin-top:4px;}
-.sig-banner.bull .sig-txt{color:var(--bull);}
-.sig-banner.bear .sig-txt{color:var(--bear);}
-.sig-banner.neutral .sig-txt{color:var(--neutral);}
+.sig-banner.bull .sig-txt{color:var(--bull);}.sig-banner.bear .sig-txt{color:var(--bear);}.sig-banner.neutral .sig-txt{color:var(--neutral);}
 .sig-score{font-family:'Space Mono',monospace;font-size:32px;font-weight:700;}
 .sig-score-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
 .tp-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
 .tp-v{font-family:'Space Mono',monospace;font-size:13px;color:var(--accent);}
 .tp-sub{font-size:9px;color:var(--muted);margin-top:2px;}
 
-/* ── GRID ── */
+/* GRIDS */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-@media(max-width:700px){
-  .grid2{grid-template-columns:1fr;}
-  .grid4{grid-template-columns:repeat(2,1fr);}
-  .grid3{grid-template-columns:repeat(3,1fr);}
-  .price-val{font-size:28px;}
-  .price-meta{gap:12px;}
-}
-@media(max-width:400px){
-  .grid3{grid-template-columns:1fr;}
-}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+@media(max-width:700px){.grid2{grid-template-columns:1fr;}.grid4{grid-template-columns:repeat(2,1fr);}.grid5{grid-template-columns:repeat(3,1fr);}.price-val{font-size:26px;}.price-meta{gap:10px;}}
+@media(max-width:420px){.grid3{grid-template-columns:repeat(2,1fr);}.grid5{grid-template-columns:repeat(2,1fr);}}
 
-/* ── CARD ── */
-.card{
-  background:var(--surface);border:1px solid var(--border);border-radius:8px;
-  padding:16px;animation:fadeUp .4s ease both;
-}
-.card:nth-child(1){animation-delay:.05s;}
-.card:nth-child(2){animation-delay:.1s;}
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;animation:fadeUp .4s ease both;}
 .card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
 .card-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);display:flex;align-items:center;gap:7px;}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite;flex-shrink:0;}
 .card-sig{font-family:'Space Mono',monospace;font-size:11px;padding:3px 9px;border-radius:3px;font-weight:700;white-space:nowrap;}
-.card-sig.bull{background:rgba(0,200,150,.15);color:var(--bull);}
-.card-sig.bear{background:rgba(255,69,96,.15);color:var(--bear);}
-.card-sig.neutral{background:rgba(255,209,102,.15);color:var(--neutral);}
+.card-sig.bull{background:rgba(0,200,150,.15);color:var(--bull);}.card-sig.bear{background:rgba(255,69,96,.15);color:var(--bear);}.card-sig.neutral{background:rgba(255,209,102,.15);color:var(--neutral);}
 
-/* ── INDICATOR ROWS ── */
+/* IND ROWS */
 .ind-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);}
 .ind-row:last-of-type{border-bottom:none;}
 .ind-name{font-size:12px;color:var(--text);margin-bottom:2px;}
@@ -130,109 +82,110 @@ body::before{
 .ind-val{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;text-align:right;white-space:nowrap;}
 .ind-r{text-align:right;}
 
-/* ── GAUGE ── */
+/* GAUGE */
 .gauge-wrap{display:flex;align-items:center;gap:6px;margin-top:4px;justify-content:flex-end;}
 .gauge-bar{width:70px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;flex-shrink:0;}
 .gauge-fill{height:100%;border-radius:2px;transition:width 1.2s ease;}
-.gauge-fill.bull{background:var(--bull);}
-.gauge-fill.bear{background:var(--bear);}
-.gauge-fill.neutral{background:var(--neutral);}
+.gauge-fill.bull{background:var(--bull);}.gauge-fill.bear{background:var(--bear);}.gauge-fill.neutral{background:var(--neutral);}
 .gauge-lbl{font-size:10px;font-family:'Space Mono',monospace;min-width:24px;text-align:right;}
 
-/* ── MACRO MINI ── */
+/* MACRO MINI */
 .m-item{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:11px;}
 .m-name{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
 .m-val{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;margin-bottom:3px;}
 .m-impact{font-size:10px;line-height:1.4;}
 .m-src{font-size:9px;color:var(--muted);margin-top:5px;display:flex;align-items:center;gap:3px;}
 
-/* ── SCORE CIRCLES ── */
+/* SCORES */
 .sc-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:13px;text-align:center;}
 .sc-dim{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;line-height:1.4;}
-.sc-circle{
-  width:50px;height:50px;border-radius:50%;margin:0 auto 6px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Space Mono',monospace;font-size:14px;font-weight:700;border:2px solid;
-  transition:all .5s;
-}
-.sc-circle.bull{border-color:var(--bull);color:var(--bull);background:rgba(0,200,150,.08);}
-.sc-circle.bear{border-color:var(--bear);color:var(--bear);background:rgba(255,69,96,.08);}
-.sc-circle.neutral{border-color:var(--neutral);color:var(--neutral);background:rgba(255,209,102,.08);}
+.sc-circle{width:50px;height:50px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:14px;font-weight:700;border:2px solid;transition:all .5s;}
+.sc-circle.bull{border-color:var(--bull);color:var(--bull);background:rgba(0,200,150,.08);}.sc-circle.bear{border-color:var(--bear);color:var(--bear);background:rgba(255,69,96,.08);}.sc-circle.neutral{border-color:var(--neutral);color:var(--neutral);background:rgba(255,209,102,.08);}
 .sc-tag{font-size:10px;font-family:'Space Mono',monospace;}
 
-/* ── DIVIDER ── */
-.divider{
-  font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);
-  display:flex;align-items:center;gap:10px;margin:16px 0 10px;
-}
+/* DIVIDER */
+.divider{font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);display:flex;align-items:center;gap:10px;margin:16px 0 10px;}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
 .div-badge{font-size:9px;padding:2px 8px;border-radius:3px;white-space:nowrap;}
 .div-badge.live{color:var(--bull);background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.25);}
 .div-badge.static{color:var(--neutral);background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25);}
 
-/* ── HINT ── */
+/* HINT */
 .hint{font-size:10px;color:var(--muted);margin-top:10px;padding-top:9px;border-top:1px solid var(--border);line-height:1.65;}
 
-/* ── ERROR TOAST ── */
-.toast{
-  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  background:rgba(255,69,96,.15);border:1px solid rgba(255,69,96,.35);
-  color:var(--bear);font-size:11px;padding:8px 16px;border-radius:6px;
-  font-family:'Space Mono',monospace;z-index:999;display:none;
-  white-space:nowrap;
-}
+/* FUNDING RATE BAR */
+.fr-bar-wrap{margin:10px 0;}
+.fr-bar-track{height:8px;background:var(--border);border-radius:4px;position:relative;overflow:hidden;margin:6px 0;}
+.fr-bar-center{position:absolute;left:50%;top:0;width:2px;height:100%;background:var(--muted);z-index:2;}
+.fr-bar-fill{position:absolute;top:0;height:100%;border-radius:0;transition:all 1s ease;z-index:1;}
+.fr-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;}
 
-.green{color:var(--bull);} .red{color:var(--bear);} .yellow{color:var(--neutral);} .orange{color:var(--accent);}
-.src-live{color:var(--bull);} .src-static{color:var(--muted);}
+/* RSI NEEDLE */
+.rsi-wrap{position:relative;margin:12px 0 4px;}
+.rsi-track{height:6px;border-radius:3px;background:linear-gradient(to right,var(--bull) 0%,var(--bull) 30%,var(--neutral) 30%,var(--neutral) 70%,var(--bear) 70%,var(--bear) 100%);opacity:.35;}
+.rsi-needle{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;border:2px solid var(--text);background:var(--surface);transition:left 1s ease;transform:translateX(-50%);}
+.rsi-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:4px;}
 
-/* ── DATA SOURCE LEGEND ── */
-.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);}
-.legend-dot{width:7px;height:7px;border-radius:50%;}
+/* JOURNAL */
+.journal-form{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:500px){.form-row{grid-template-columns:1fr;}}
+.form-full{margin-bottom:10px;}
+.form-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:5px;font-size:12px;font-family:'Noto Sans SC',sans-serif;outline:none;transition:border-color .2s;}
+.form-textarea{min-height:70px;resize:vertical;line-height:1.5;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);}
+.form-select option{background:var(--surface2);}
+.btn-primary{background:var(--accent);color:#000;border:none;padding:9px 20px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Noto Sans SC',sans-serif;transition:opacity .2s;-webkit-tap-highlight-color:transparent;width:100%;}
+.btn-primary:active{opacity:.8;}
+.btn-danger{background:transparent;color:var(--bear);border:1px solid rgba(255,69,96,.3);padding:5px 10px;border-radius:4px;cursor:pointer;font-size:11px;font-family:'Noto Sans SC',sans-serif;-webkit-tap-highlight-color:transparent;}
+.btn-danger:active{background:rgba(255,69,96,.1);}
+.journal-entries{display:flex;flex-direction:column;gap:10px;}
+.journal-entry{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;animation:fadeUp .3s ease;}
+.entry-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;}
+.entry-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.entry-dir{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:2px 10px;border-radius:3px;}
+.entry-dir.long{background:rgba(0,200,150,.15);color:var(--bull);}.entry-dir.short{background:rgba(255,69,96,.15);color:var(--bear);}.entry-dir.watch{background:rgba(255,209,102,.15);color:var(--neutral);}
+.entry-price{font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);}
+.entry-date{font-size:10px;color:var(--muted);}
+.entry-body{font-size:12px;color:var(--text);line-height:1.6;margin-bottom:8px;}
+.entry-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.entry-tag{font-size:10px;padding:1px 7px;border-radius:3px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+.entry-snapshot{font-size:10px;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px solid var(--border);}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);font-size:11px;padding:8px 16px;border-radius:6px;font-family:'Space Mono',monospace;z-index:999;display:none;white-space:nowrap;}
+.green{color:var(--bull);}.red{color:var(--bear);}.yellow{color:var(--neutral);}.orange{color:var(--accent);}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<!-- Header -->
 <div class="header">
   <div>
     <div class="logo">₿ BTC 波段看板</div>
-    <div class="subtitle">
-      <span class="live-dot"></span>实时数据接入 · 链上 · 宏观 · 波段周期1-2周
-    </div>
+    <div class="subtitle"><span class="live-dot"></span>链上 · 宏观 · 合约 · 技术面 · 波段1-2周</div>
   </div>
   <div class="hdr-r">
     <div class="ts" id="lastUpdate">加载中…</div>
     <div class="pill">SWING · 1-2W</div>
-    <button class="refresh-btn" id="refreshBtn" onclick="loadAll()">
-      <span id="refIcon">↻</span> 刷新
-    </button>
+    <button class="refresh-btn" id="refreshBtn" onclick="loadAll()"><span id="refIcon">↻</span> 刷新</button>
   </div>
 </div>
 
-<!-- Data source legend -->
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:var(--bull)"></div>实时数据</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--neutral)"></div>每日更新</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--muted)"></div>参考静态值</div>
-</div>
-
-<!-- Price Hero -->
 <div class="price-hero">
   <div class="price-main">
     <div class="price-val" id="priceVal">--</div>
     <div class="price-chg" id="priceChg">--</div>
   </div>
   <div class="price-meta">
-    <div class="mi"><div class="mi-l">24H 高</div><div class="mi-v green" id="hi24">--</div></div>
-    <div class="mi"><div class="mi-l">24H 低</div><div class="mi-v red" id="lo24">--</div></div>
+    <div class="mi"><div class="mi-l">24H高</div><div class="mi-v green" id="hi24">--</div></div>
+    <div class="mi"><div class="mi-l">24H低</div><div class="mi-v red" id="lo24">--</div></div>
     <div class="mi"><div class="mi-l">市值</div><div class="mi-v" id="mcap">--</div></div>
     <div class="mi"><div class="mi-l">距ATH</div><div class="mi-v" id="athDist">--</div></div>
   </div>
 </div>
 
-<!-- Overall Signal -->
 <div class="sig-banner neutral" id="sigBanner">
   <div>
     <div class="sig-lbl">综合交易信号 · 波段1-2周</div>
@@ -241,7 +194,7 @@ body::before{
   <div id="tpWrap" style="display:none">
     <div class="tp-l">参考止盈区间</div>
     <div class="tp-v" id="tpVal">--</div>
-    <div class="tp-sub">基于当前价格±历史波动测算</div>
+    <div class="tp-sub">基于当前价格±波动测算</div>
   </div>
   <div>
     <div class="sig-score" id="sigScore" style="color:var(--muted)">--</div>
@@ -249,434 +202,418 @@ body::before{
   </div>
 </div>
 
-<!-- ── ON-CHAIN ── -->
-<div class="divider">
-  链上数据
-  <span class="div-badge live">CoinGecko · Alternative.me · 实时</span>
+<div class="nav">
+  <button class="nav-tab active" onclick="switchTab('overview',this)">📊 总览</button>
+  <button class="nav-tab" onclick="switchTab('contracts',this)">⚡ 合约市场</button>
+  <button class="nav-tab" onclick="switchTab('technical',this)">📈 技术面</button>
+  <button class="nav-tab" onclick="switchTab('journal',this)">📝 交易笔记</button>
 </div>
-<div class="grid2">
 
-  <!-- Card 1 -->
-  <div class="card">
-    <div class="card-hdr">
-      <div class="card-title"><span class="dot"></span>市场估值 & 情绪</div>
-      <div class="card-sig neutral" id="oc1Sig">--</div>
+<!-- TAB: OVERVIEW -->
+<div class="tab-panel active" id="tab-overview">
+  <div class="divider">链上数据 <span class="div-badge live">CoinGecko · Alternative.me · 实时</span></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title"><span class="dot"></span>市场估值 & 情绪</div><div class="card-sig neutral" id="oc1Sig">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">MVRV 周期估算</div><div class="ind-desc">&lt;1.5底部 · 1.5~3.5中性 · &gt;3.5顶部</div></div><div class="ind-r"><div class="ind-val" id="mvrvVal">--</div><div class="gauge-wrap"><div class="gauge-bar"><div class="gauge-fill neutral" id="mvrvG" style="width:0"></div></div><div class="gauge-lbl" id="mvrvLbl">--</div></div></div></div>
+      <div class="ind-row"><div><div class="ind-name">恐慌贪婪指数</div><div class="ind-desc">&lt;25极度恐慌(买) · &gt;75极度贪婪(减)</div></div><div class="ind-r"><div class="ind-val" id="fngVal">--</div><div class="gauge-wrap"><div class="gauge-bar"><div class="gauge-fill neutral" id="fngG" style="width:0"></div></div><div class="gauge-lbl" id="fngLbl">--</div></div></div></div>
+      <div class="ind-row"><div><div class="ind-name">BTC市场占比</div><div class="ind-desc">Dominance上升=资金集中BTC</div></div><div class="ind-val" id="btcDom">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">24H成交量</div><div class="ind-desc">放量上涨信号强</div></div><div class="ind-val" id="vol24c">--</div></div>
+      <div class="hint" id="oc1Hint">--</div>
     </div>
-
-    <div class="ind-row">
-      <div><div class="ind-name">MVRV 周期位置估算</div><div class="ind-desc">&lt;1.5底部区 · 1.5~3.5中性 · &gt;3.5顶部风险</div></div>
-      <div class="ind-r">
-        <div class="ind-val" id="mvrvVal">--</div>
-        <div class="gauge-wrap"><div class="gauge-bar"><div class="gauge-fill neutral" id="mvrvG" style="width:0"></div></div><div class="gauge-lbl" id="mvrvLbl">--</div></div>
-      </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title"><span class="dot"></span>供应结构 & 周期</div><div class="card-sig neutral" id="oc2Sig">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">减半周期位置</div><div class="ind-desc">2024-04-20减半 · 牛市窗口6-18月</div></div><div class="ind-r"><div class="ind-val orange" id="halvPos">--</div><div style="font-size:10px;margin-top:3px" id="halvStatus">--</div></div></div>
+      <div class="ind-row"><div><div class="ind-name">7日涨跌</div><div class="ind-desc">短期动量</div></div><div class="ind-val" id="p7d">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">30日涨跌</div><div class="ind-desc">中期趋势</div></div><div class="ind-val" id="p30d">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">流通供应</div><div class="ind-desc">已挖出/最大2100万</div></div><div class="ind-val" id="supply">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">距ATH折价</div><div class="ind-desc">折价越大潜在空间越大</div></div><div class="ind-val" id="fromAth">--</div></div>
+      <div class="hint" id="oc2Hint">--</div>
     </div>
-
-    <div class="ind-row">
-      <div><div class="ind-name">恐慌贪婪指数</div><div class="ind-desc">&lt;25极度恐慌(买) · &gt;75极度贪婪(减仓)</div></div>
-      <div class="ind-r">
-        <div class="ind-val" id="fngVal">--</div>
-        <div class="gauge-wrap"><div class="gauge-bar"><div class="gauge-fill neutral" id="fngG" style="width:0"></div></div><div class="gauge-lbl" id="fngLbl">--</div></div>
-      </div>
-    </div>
-
-    <div class="ind-row">
-      <div><div class="ind-name">BTC 市场占比</div><div class="ind-desc">占比上升=资金集中BTC=偏多</div></div>
-      <div class="ind-val" id="btcDom">--</div>
-    </div>
-
-    <div class="ind-row">
-      <div><div class="ind-name">24H 成交量</div><div class="ind-desc">量能参考，放量上涨信号强</div></div>
-      <div class="ind-val" id="vol24c">--</div>
-    </div>
-
-    <div class="hint" id="oc1Hint">--</div>
   </div>
 
-  <!-- Card 2 -->
-  <div class="card">
-    <div class="card-hdr">
-      <div class="card-title"><span class="dot"></span>供应结构 & 周期位置</div>
-      <div class="card-sig neutral" id="oc2Sig">--</div>
-    </div>
-
-    <div class="ind-row">
-      <div><div class="ind-name">减半周期位置</div><div class="ind-desc">上次减半 2024-04-20 · 历史牛市窗口6-18个月</div></div>
-      <div class="ind-r">
-        <div class="ind-val orange" id="halvPos">--</div>
-        <div style="font-size:10px;margin-top:3px" id="halvStatus">--</div>
+  <div class="divider">宏观环境 <span class="div-badge static">参考静态 + Yahoo实时</span></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title"><span class="dot"></span>美联储 & 利率</div><div class="card-sig neutral" id="macFedSig">--</div></div>
+      <div class="grid3">
+        <div class="m-item"><div class="m-name">联邦利率</div><div class="m-val">4.25~4.50%</div><div class="m-impact yellow">⚠ 高利率承压</div><div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--muted);display:inline-block"></span>FRED参考</div></div>
+        <div class="m-item"><div class="m-name">美债10Y</div><div class="m-val" id="tsy10y">--</div><div class="m-impact" id="tsyImp">--</div><div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--bull);display:inline-block;animation:pulse 1.5s ease-in-out infinite"></span>实时</div></div>
+        <div class="m-item"><div class="m-name">CPI通胀</div><div class="m-val">2.8%</div><div class="m-impact yellow">◆ 缓降中</div><div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--muted);display:inline-block"></span>FRED参考</div></div>
       </div>
+      <div class="hint">高利率对BTC中期形成压制。关注FOMC节点，降息预期升温时BTC通常提前反应。</div>
     </div>
-
-    <div class="ind-row">
-      <div><div class="ind-name">7日涨跌幅</div><div class="ind-desc">短期动量</div></div>
-      <div class="ind-val" id="p7d">--</div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title"><span class="dot"></span>美元 & 流动性</div><div class="card-sig neutral" id="macDxySig">--</div></div>
+      <div class="grid3">
+        <div class="m-item"><div class="m-name">DXY美元</div><div class="m-val" id="dxyVal">--</div><div class="m-impact" id="dxyImp">--</div><div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--bull);display:inline-block;animation:pulse 1.5s ease-in-out infinite"></span>实时</div></div>
+        <div class="m-item"><div class="m-name">全球M2</div><div class="m-val green">扩张中</div><div class="m-impact green">✓ 中期利好</div><div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--muted);display:inline-block"></span>参考</div></div>
+        <div class="m-item"><div class="m-name">ETF净流入</div><div class="m-val green">净流入</div><div class="m-impact green">✓ 机构配置</div><div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--muted);display:inline-block"></span>参考</div></div>
+      </div>
+      <div class="hint">DXY与BTC负相关约-0.6。M2扩张下BTC通常滞后3月跟涨。ETF净流入提供结构支撑。</div>
     </div>
-
-    <div class="ind-row">
-      <div><div class="ind-name">30日涨跌幅</div><div class="ind-desc">中期趋势强弱</div></div>
-      <div class="ind-val" id="p30d">--</div>
-    </div>
-
-    <div class="ind-row">
-      <div><div class="ind-name">流通供应</div><div class="ind-desc">已挖出 / 最大2100万枚</div></div>
-      <div class="ind-val" id="supply">--</div>
-    </div>
-
-    <div class="ind-row">
-      <div><div class="ind-name">距历史最高价</div><div class="ind-desc">ATH折价越大 → 潜在上涨空间越大</div></div>
-      <div class="ind-val" id="fromAth">--</div>
-    </div>
-
-    <div class="hint" id="oc2Hint">--</div>
   </div>
+
+  <div class="divider">五维评分总览</div>
+  <div class="grid5">
+    <div class="sc-item"><div class="sc-dim">链上估值<br>情绪</div><div class="sc-circle neutral" id="sc1">--</div><div class="sc-tag" id="st1">--</div></div>
+    <div class="sc-item"><div class="sc-dim">供应结构<br>周期</div><div class="sc-circle neutral" id="sc2">--</div><div class="sc-tag" id="st2">--</div></div>
+    <div class="sc-item"><div class="sc-dim">利率宏观<br>环境</div><div class="sc-circle neutral" id="sc3">--</div><div class="sc-tag" id="st3">--</div></div>
+    <div class="sc-item"><div class="sc-dim">美元<br>流动性</div><div class="sc-circle neutral" id="sc4">--</div><div class="sc-tag" id="st4">--</div></div>
+    <div class="sc-item"><div class="sc-dim">合约<br>情绪</div><div class="sc-circle neutral" id="sc5">--</div><div class="sc-tag" id="st5">--</div></div>
+  </div>
+  <div style="height:16px"></div>
 </div>
 
-<!-- ── MACRO ── -->
-<div class="divider">
-  宏观环境
-  <span class="div-badge static" id="macroBadge">参考静态值 · 人工定期更新</span>
-</div>
-<div class="grid2">
-
-  <!-- Card 3 -->
-  <div class="card">
-    <div class="card-hdr">
-      <div class="card-title"><span class="dot"></span>美联储 & 利率环境</div>
-      <div class="card-sig neutral" id="macFedSig">--</div>
+<!-- TAB: CONTRACTS -->
+<div class="tab-panel" id="tab-contracts">
+  <div class="divider">合约市场 <span class="div-badge live">Binance Public API · 实时</span></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title"><span class="dot"></span>资金费率 Funding Rate</div><div class="card-sig neutral" id="frSig">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">当前资金费率（8H）</div><div class="ind-desc">正值=多头付费=多头拥挤信号</div></div><div class="ind-r"><div class="ind-val" id="frVal">--</div><div style="font-size:10px;margin-top:3px;color:var(--muted)" id="frAnnual">--</div></div></div>
+      <div class="fr-bar-wrap">
+        <div class="fr-labels"><span>极度看空</span><span style="text-align:center">中性 0%</span><span style="text-align:right">极度看多</span></div>
+        <div class="fr-bar-track"><div class="fr-bar-center"></div><div id="frBarFill" class="fr-bar-fill" style="width:0;left:50%;background:var(--neutral)"></div></div>
+      </div>
+      <div class="ind-row"><div><div class="ind-name">信号解读</div></div><div class="ind-val" id="frSignalText" style="font-size:11px;max-width:180px;white-space:normal;text-align:right;line-height:1.4">--</div></div>
+      <div class="hint">费率持续高正值(&gt;0.05%)=多头拥挤，警惕回调插针。持续负值=空头过度，反弹机会。波段重点：极端费率往往是短期顶/底信号。</div>
     </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title"><span class="dot"></span>未平仓合约 Open Interest</div><div class="card-sig neutral" id="oiSig">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">当前未平仓量(USD)</div><div class="ind-desc">全市场BTC合约持仓总量</div></div><div class="ind-val" id="oiVal">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">多空比 L/S Ratio</div><div class="ind-desc">&gt;1.2多头拥挤 · &lt;0.8空头拥挤</div></div><div class="ind-r"><div class="ind-val" id="lsRatio">--</div><div style="font-size:10px;margin-top:3px" id="lsDesc">--</div></div></div>
+      <div class="ind-row"><div><div class="ind-name">清算风险评估</div><div class="ind-desc">OI高位+高费率=清算风险积累</div></div><div class="ind-val" id="liqRisk">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">OI评级</div><div class="ind-desc">持仓规模健康度</div></div><div class="ind-val" id="oiRating">--</div></div>
+      <div class="hint" id="oiHint">OI快速上升+价格涨=趋势延续但杠杆积累。OI下降=去杠杆。波段建仓时避开OI极端高位，防止清算踩踏。</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-hdr"><div class="card-title"><span class="dot"></span>合约情绪综合判断</div><div class="card-sig neutral" id="contractSig">--</div></div>
     <div class="grid3">
-      <div class="m-item">
-        <div class="m-name">联邦利率</div>
-        <div class="m-val" id="fedRate">4.25~4.50%</div>
-        <div class="m-impact yellow" id="fedImp">⚠ 高利率承压</div>
-        <div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--muted);display:inline-block"></span>FRED参考</div>
-      </div>
-      <div class="m-item">
-        <div class="m-name">美债10Y</div>
-        <div class="m-val" id="tsy10y">--</div>
-        <div class="m-impact" id="tsyImp">--</div>
-        <div class="m-src" id="tsySrc"><span style="width:5px;height:5px;border-radius:50%;background:var(--bull);display:inline-block;animation:pulse 1.5s ease-in-out infinite"></span>实时</div>
-      </div>
-      <div class="m-item">
-        <div class="m-name">CPI通胀</div>
-        <div class="m-val" id="cpiVal">2.8%</div>
-        <div class="m-impact yellow" id="cpiImp">◆ 缓降中</div>
-        <div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--muted);display:inline-block"></span>FRED参考</div>
-      </div>
+      <div class="m-item"><div class="m-name">费率信号</div><div class="m-val" id="frMini">--</div><div class="m-impact" id="frImpact">--</div></div>
+      <div class="m-item"><div class="m-name">持仓结构</div><div class="m-val" id="oiMini">--</div><div class="m-impact" id="oiImpact">--</div></div>
+      <div class="m-item"><div class="m-name">操作建议</div><div class="m-val" id="contractAdvice" style="font-size:12px">--</div><div class="m-impact" id="contractAdviceDesc" style="font-size:10px">--</div></div>
     </div>
-    <div class="hint" id="macFedHint">高利率环境对BTC波段形成中期压制。关注每次FOMC会议节点，降息预期升温时BTC通常提前反应。</div>
+    <div class="hint">合约数据是波段交易最直接的短期信号。配合链上和宏观交叉验证，三者共振时信号最强。</div>
   </div>
+  <div style="height:16px"></div>
+</div>
 
-  <!-- Card 4 -->
-  <div class="card">
-    <div class="card-hdr">
-      <div class="card-title"><span class="dot"></span>美元指数 & 全球流动性</div>
-      <div class="card-sig neutral" id="macDxySig">--</div>
+<!-- TAB: TECHNICAL -->
+<div class="tab-panel" id="tab-technical">
+  <div class="divider">技术面指标 <span class="div-badge live">Binance K线 · 实时计算</span></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title"><span class="dot"></span>RSI 相对强弱指数</div><div class="card-sig neutral" id="rsiSig">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">RSI(14) 日线</div><div class="ind-desc">&lt;30超卖(买) · 30~70中性 · &gt;70超买(减)</div></div><div class="ind-r"><div class="ind-val" id="rsiDVal">--</div></div></div>
+      <div class="rsi-wrap"><div class="rsi-track"></div><div class="rsi-needle" id="rsiNeedle" style="left:50%"></div><div class="rsi-labels"><span>0</span><span>超卖30</span><span>50</span><span>超买70</span><span>100</span></div></div>
+      <div class="ind-row"><div><div class="ind-name">RSI(14) 4小时</div><div class="ind-desc">短期超买超卖</div></div><div class="ind-val" id="rsi4hVal">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">RSI信号</div></div><div class="ind-val" id="rsiDesc">--</div></div>
+      <div class="hint" id="rsiHint">日线RSI跌破30后回升=买点；突破70后回落=减仓。4H RSI用于精确入场时机，不宜单独依赖。</div>
     </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title"><span class="dot"></span>均线结构 Moving Averages</div><div class="card-sig neutral" id="maSig">--</div></div>
+      <div class="ind-row"><div><div class="ind-name">MA20 日线</div><div class="ind-desc">波段核心参考线</div></div><div class="ind-r"><div class="ind-val" id="ma20Val">--</div><div style="font-size:10px;margin-top:2px" id="ma20Pct">--</div></div></div>
+      <div class="ind-row"><div><div class="ind-name">MA50 日线</div><div class="ind-desc">中期趋势线</div></div><div class="ind-r"><div class="ind-val" id="ma50Val">--</div><div style="font-size:10px;margin-top:2px" id="ma50Pct">--</div></div></div>
+      <div class="ind-row"><div><div class="ind-name">MA200 日线</div><div class="ind-desc">牛熊分界线，历史从未长期跌破</div></div><div class="ind-r"><div class="ind-val" id="ma200Val">--</div><div style="font-size:10px;margin-top:2px" id="ma200Pct">--</div></div></div>
+      <div class="ind-row"><div><div class="ind-name">均线排列</div><div class="ind-desc">MA20&gt;MA50&gt;MA200=多头排列</div></div><div class="ind-val" id="maArrange">--</div></div>
+      <div class="hint" id="maHint">均线偏离度&gt;±15%时警惕均值回归。价格在MA20上方且多头排列为最优做多结构。</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-hdr"><div class="card-title"><span class="dot"></span>技术面综合信号</div><div class="card-sig neutral" id="techSig">--</div></div>
     <div class="grid3">
-      <div class="m-item">
-        <div class="m-name">DXY 美元</div>
-        <div class="m-val" id="dxyVal">--</div>
-        <div class="m-impact" id="dxyImp">--</div>
-        <div class="m-src" id="dxySrc"><span style="width:5px;height:5px;border-radius:50%;background:var(--bull);display:inline-block;animation:pulse 1.5s ease-in-out infinite"></span>实时</div>
-      </div>
-      <div class="m-item">
-        <div class="m-name">全球M2</div>
-        <div class="m-val green" id="m2Val">扩张中</div>
-        <div class="m-impact green">✓ 中期利好</div>
-        <div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--muted);display:inline-block"></span>宏观参考</div>
-      </div>
-      <div class="m-item">
-        <div class="m-name">ETF净流向</div>
-        <div class="m-val green" id="etfVal">净流入</div>
-        <div class="m-impact green">✓ 机构配置中</div>
-        <div class="m-src"><span style="width:5px;height:5px;border-radius:50%;background:var(--muted);display:inline-block"></span>Coinglass参考</div>
-      </div>
+      <div class="m-item"><div class="m-name">RSI综合</div><div class="m-val" id="rsiMini">--</div><div class="m-impact" id="rsiMiniDesc">--</div></div>
+      <div class="m-item"><div class="m-name">均线结构</div><div class="m-val" id="maMini">--</div><div class="m-impact" id="maMiniDesc">--</div></div>
+      <div class="m-item"><div class="m-name">操作建议</div><div class="m-val" id="techAdvice" style="font-size:12px">--</div><div class="m-impact" id="techAdviceDesc" style="font-size:10px">--</div></div>
     </div>
-    <div class="hint">DXY与BTC历史负相关约-0.6。M2扩张周期下BTC通常滞后约3个月跟涨。现货ETF持续净流入提供结构性买盘支撑。</div>
   </div>
+  <div style="height:16px"></div>
 </div>
 
-<!-- ── SCORE SUMMARY ── -->
-<div class="divider">维度评分总览</div>
-<div class="grid4">
-  <div class="sc-item"><div class="sc-dim">链上估值<br>情绪</div><div class="sc-circle neutral" id="sc1">--</div><div class="sc-tag" id="st1">--</div></div>
-  <div class="sc-item"><div class="sc-dim">供应结构<br>周期</div><div class="sc-circle neutral" id="sc2">--</div><div class="sc-tag" id="st2">--</div></div>
-  <div class="sc-item"><div class="sc-dim">利率宏观<br>环境</div><div class="sc-circle neutral" id="sc3">--</div><div class="sc-tag" id="st3">--</div></div>
-  <div class="sc-item"><div class="sc-dim">美元<br>流动性</div><div class="sc-circle neutral" id="sc4">--</div><div class="sc-tag" id="st4">--</div></div>
+<!-- TAB: JOURNAL -->
+<div class="tab-panel" id="tab-journal">
+  <div class="divider">交易笔记</div>
+  <div class="journal-form">
+    <div style="font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">📝 记录新笔记</div>
+    <div class="form-row">
+      <div><div class="form-label">交易方向</div><select class="form-select" id="jDir"><option value="watch">📊 观望</option><option value="long">▲ 做多</option><option value="short">▼ 做空</option></select></div>
+      <div><div class="form-label">入场参考价</div><input class="form-input" id="jPrice" type="number" placeholder="自动填入当前价格"></div>
+    </div>
+    <div class="form-row">
+      <div><div class="form-label">止损价</div><input class="form-input" id="jSl" type="number" placeholder="止损价格"></div>
+      <div><div class="form-label">目标止盈价</div><input class="form-input" id="jTp" type="number" placeholder="止盈价格"></div>
+    </div>
+    <div class="form-full">
+      <div class="form-label">判断依据 & 分析思路</div>
+      <textarea class="form-textarea" id="jBody" placeholder="例如：MVRV处于低估区 + 恐慌指数极度恐慌 + 资金费率转负 + RSI超卖 → 多维共振，偏多做多。参考止盈区间 $xxx~$xxx，止损 $xxx。"></textarea>
+    </div>
+    <div class="form-row">
+      <div><div class="form-label">标签（逗号分隔）</div><input class="form-input" id="jTags" placeholder="减半周期, 资金费率, RSI超卖…"></div>
+      <div style="display:flex;align-items:flex-end"><button class="btn-primary" onclick="addEntry()">+ 保存笔记</button></div>
+    </div>
+  </div>
+  <div id="journalEntries" class="journal-entries"><div style="text-align:center;padding:30px;color:var(--muted);font-size:12px">暂无笔记 ↑ 记录你的第一条交易判断</div></div>
+  <div style="height:24px"></div>
 </div>
 
-<div style="height:24px"></div>
-
-</div><!-- /wrap -->
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════
-const S = { oc1:50, oc2:50, macFed:48, macDxy:55 };
-let _price = 0, _ath = 0;
+// ═══ STATE ═══
+const S={oc1:50,oc2:50,macFed:46,macDxy:52,contracts:50};
+let _price=0,_ath=0;
 
-// ═══════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════
-const $  = id => document.getElementById(id);
-const set = (id,v) => { const e=$(id); if(e) e.textContent = (v??'--'); };
-const setColor = (el,color) => { if(el) el.style.color = color; };
-
-function fmt(n){
-  if(!n||isNaN(n)) return '--';
-  if(n>=1e12) return '$'+(n/1e12).toFixed(2)+'T';
-  if(n>=1e9)  return '$'+(n/1e9).toFixed(2)+'B';
-  if(n>=1e6)  return '$'+(n/1e6).toFixed(2)+'M';
-  return '$'+n.toLocaleString('en-US');
-}
-function pct(n){ if(n==null||isNaN(n)) return '--'; return (n>=0?'+':'')+n.toFixed(2)+'%'; }
-function cls(s){ return s>=60?'bull':s<=40?'bear':'neutral'; }
-function label(s){ return s>=60?'偏多':s<=40?'偏空':'中性'; }
-function col(c){ return c==='bull'?'var(--bull)':c==='bear'?'var(--bear)':'var(--neutral)'; }
-
-function setCls(id, c){
-  const e=$(id); if(!e) return;
-  e.className = e.className.replace(/\b(bull|bear|neutral)\b/g,'').trim()+' '+c;
+// ═══ TABS ═══
+function switchTab(name,btn){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
 }
 
-function toast(msg, dur=3000){
-  const t=$('toast'); t.textContent=msg; t.style.display='block';
-  setTimeout(()=>t.style.display='none', dur);
+// ═══ HELPERS ═══
+const $=id=>document.getElementById(id);
+const set=(id,v)=>{const e=$(id);if(e)e.textContent=v??'--';};
+function fmt(n){if(!n||isNaN(n))return '--';if(n>=1e12)return '$'+(n/1e12).toFixed(2)+'T';if(n>=1e9)return '$'+(n/1e9).toFixed(2)+'B';if(n>=1e6)return '$'+(n/1e6).toFixed(2)+'M';return '$'+n.toLocaleString('en-US');}
+function pct(n){if(n==null||isNaN(n))return '--';return(n>=0?'+':'')+n.toFixed(2)+'%';}
+function cls(s){return s>=60?'bull':s<=40?'bear':'neutral';}
+function label(s){return s>=60?'偏多':s<=40?'偏空':'中性';}
+function col(c){return c==='bull'?'var(--bull)':c==='bear'?'var(--bear)':'var(--neutral)';}
+function setCls(id,c){const e=$(id);if(!e)return;e.className=e.className.replace(/\b(bull|bear|neutral)\b/g,'').trim()+' '+c;}
+function toast(msg,good=true){
+  const t=$('toast');
+  t.textContent=msg;
+  t.style.cssText=`background:${good?'rgba(0,200,150,.15)':'rgba(255,69,96,.15)'};border:1px solid ${good?'rgba(0,200,150,.35)':'rgba(255,69,96,.35)'};color:${good?'var(--bull)':'var(--bear)'};display:block`;
+  setTimeout(()=>t.style.display='none',3000);
 }
 
-// ═══════════════════════════════════════════
-// OVERALL SIGNAL
-// ═══════════════════════════════════════════
+// ═══ OVERALL SIGNAL ═══
 function updateOverall(){
-  const vals = Object.values(S);
-  const avg  = Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
-  const c    = cls(avg);
-
-  set('sigScore', avg);
-  $('sigScore').style.color = col(c);
-
-  let txt;
-  if(avg>=62)      txt='▲ 偏多 — 波段做多机会';
-  else if(avg<=38) txt='▼ 偏空 — 谨慎或空头机会';
-  else             txt='◆ 观望 — 信号混合，等待确认';
-
-  $('sigBanner').className = 'sig-banner '+c;
-  set('sigTxt', txt);
-
-  if(_price>0 && c!=='neutral'){
-    const [lo,hi] = c==='bull'
-      ? [(_price*1.06)|0, (_price*1.15)|0]
-      : [(_price*0.87)|0, (_price*0.95)|0];
+  const avg=Math.round(Object.values(S).reduce((a,b)=>a+b,0)/Object.keys(S).length);
+  const c=cls(avg);
+  set('sigScore',avg);
+  $('sigScore').style.color=col(c);
+  set('sigTxt',avg>=62?'▲ 偏多 — 波段做多机会':avg<=38?'▼ 偏空 — 谨慎或空头机会':'◆ 观望 — 信号混合，等待确认');
+  $('sigBanner').className='sig-banner '+c;
+  if(_price>0&&c!=='neutral'){
+    const[lo,hi]=c==='bull'?[(_price*1.06)|0,(_price*1.15)|0]:[(_price*0.87)|0,(_price*0.95)|0];
     set('tpVal','$'+lo.toLocaleString()+' ~ $'+hi.toLocaleString());
     $('tpWrap').style.display='block';
-  } else {
-    $('tpWrap').style.display='none';
-  }
-
-  // circles
-  [['sc1','st1',S.oc1],['sc2','st2',S.oc2],['sc3','st3',S.macFed],['sc4','st4',S.macDxy]].forEach(([ci,ti,s])=>{
+  }else $('tpWrap').style.display='none';
+  [['sc1','st1',S.oc1],['sc2','st2',S.oc2],['sc3','st3',S.macFed],['sc4','st4',S.macDxy],['sc5','st5',S.contracts]].forEach(([ci,ti,s])=>{
     const c2=cls(s);
-    const ce=$(ci); if(ce){ce.className='sc-circle '+c2;ce.textContent=s;}
-    const te=$(ti); if(te){te.textContent=label(s);te.style.color=col(c2);}
+    const ce=$(ci);if(ce){ce.className='sc-circle '+c2;ce.textContent=s;}
+    const te=$(ti);if(te){te.textContent=label(s);te.style.color=col(c2);}
   });
 }
 
-// ═══════════════════════════════════════════
-// LOAD: BTC (CoinGecko — CORS OK)
-// ═══════════════════════════════════════════
+// ═══ BTC PRICE ═══
 async function loadBTC(){
   try{
-    const r = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false',{cache:'no-store'});
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const d = await r.json();
-    const md = d.market_data;
-    _price = md.current_price.usd;
-    _ath   = md.ath.usd;
-
-    // Hero
+    const d=(await (await fetch('https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false',{cache:'no-store'})).json()).market_data;
+    _price=d.current_price.usd;_ath=d.ath.usd;
     set('priceVal','$'+_price.toLocaleString('en-US',{maximumFractionDigits:0}));
-    const c24 = md.price_change_percentage_24h;
-    const ce  = $('priceChg');
-    ce.textContent = pct(c24);
-    ce.style.color = c24>=0?'var(--bull)':'var(--bear)';
-    set('hi24','$'+md.high_24h.usd.toLocaleString());
-    set('lo24','$'+md.low_24h.usd.toLocaleString());
-    set('mcap', fmt(md.market_cap.usd));
-    const athPct = (_price-_ath)/_ath*100;
-    const athEl = $('athDist');
-    athEl.textContent = pct(athPct);
-    athEl.style.color = athPct>=-5?'var(--bull)':athPct>=-20?'var(--neutral)':'var(--muted)';
-
-    // Card 1
-    set('vol24c', fmt(md.total_volume.usd));
-    const dom = md.market_cap_percentage?.btc ?? 52;
-    set('btcDom', dom.toFixed(1)+'%');
-    $('btcDom').style.color = dom>55?'var(--bull)':dom<45?'var(--bear)':'var(--neutral)';
-
-    // MVRV estimate
-    const athRatio = _price/_ath;
-    const mvrv     = parseFloat((1+athRatio*4.2).toFixed(2));
-    const mvrvPct  = Math.min(100,(mvrv/5)*100);
-    const mvrvC    = mvrv<1.5?'bull':mvrv>3.5?'bear':'neutral';
-    set('mvrvVal', mvrv+'x');
-    $('mvrvVal').style.color = col(mvrvC);
-    $('mvrvG').style.width = mvrvPct+'%';
-    $('mvrvG').className   = 'gauge-fill '+mvrvC;
-    set('mvrvLbl', mvrv+'x');
-
-    // OC1 score
-    let s1 = mvrv<1.5?78:mvrv>3.5?22:Math.round(78-(mvrv-1.5)/2*56);
-    if(dom>55) s1+=8; if(dom<45) s1-=8;
-    S.oc1 = Math.max(10,Math.min(90,s1));
-    const c1=cls(S.oc1); set('oc1Sig',label(S.oc1)); setCls('oc1Sig',c1);
-    set('oc1Hint',`MVRV估算${mvrv}x · ${mvrvC==='bull'?'历史低估区，看多信号强':mvrvC==='bear'?'历史高估区，注意止盈':'中性区间'} · BTC占比${dom.toFixed(1)}%`);
-
-    // Card 2
-    const halvDate  = new Date('2024-04-20');
-    const monthsSince = Math.floor((Date.now()-halvDate.getTime())/864e5/30);
-    const inWindow  = monthsSince>=6 && monthsSince<=18;
-    set('halvPos','减半后第 '+monthsSince+' 个月');
-    const hEl=$('halvStatus');
-    hEl.textContent = inWindow?'🟢 历史牛市核心窗口 (6-18月)':'📊 等待牛市动能';
-    hEl.style.color = inWindow?'var(--bull)':'var(--muted)';
-
-    const p7=md.price_change_percentage_7d, p30=md.price_change_percentage_30d;
-    set('p7d',pct(p7)); $('p7d').style.color=p7>=0?'var(--bull)':'var(--bear)';
-    set('p30d',pct(p30)); $('p30d').style.color=p30>=0?'var(--bull)':'var(--bear)';
-    set('supply',(md.circulating_supply/1e6).toFixed(3)+'M BTC ('+(md.circulating_supply/21e6*100).toFixed(1)+'%)');
-    set('fromAth',pct(athPct)); $('fromAth').style.color=athPct>=-10?'var(--bull)':athPct>=-25?'var(--neutral)':'var(--muted)';
-
-    let s2=50;
-    if(inWindow) s2+=14;
-    if(p7>8) s2+=10; else if(p7<-8) s2-=10;
-    if(p30>15) s2+=10; else if(p30<-15) s2-=10;
-    if(athPct>=-10) s2+=6;
-    S.oc2=Math.max(10,Math.min(90,Math.round(s2)));
-    const c2=cls(S.oc2); set('oc2Sig',label(S.oc2)); setCls('oc2Sig',c2);
-    set('oc2Hint',`7D ${pct(p7)} · 30D ${pct(p30)} · ${inWindow?'位于减半后牛市窗口，偏多':'不在核心牛市窗口，谨慎'}`);
-
+    const c24=d.price_change_percentage_24h;
+    $('priceChg').textContent=pct(c24);$('priceChg').style.color=c24>=0?'var(--bull)':'var(--bear)';
+    set('hi24','$'+d.high_24h.usd.toLocaleString());set('lo24','$'+d.low_24h.usd.toLocaleString());set('mcap',fmt(d.market_cap.usd));
+    const ap=(_price-_ath)/_ath*100;
+    $('athDist').textContent=pct(ap);$('athDist').style.color=ap>=-5?'var(--bull)':ap>=-20?'var(--neutral)':'var(--muted)';
+    set('vol24c',fmt(d.total_volume.usd));
+    const dom=d.market_cap_percentage?.btc??52;
+    set('btcDom',dom.toFixed(1)+'%');$('btcDom').style.color=dom>55?'var(--bull)':dom<45?'var(--bear)':'var(--neutral)';
+    const mvrv=parseFloat((1+(_price/_ath)*4.2).toFixed(2));
+    const mp=Math.min(100,(mvrv/5)*100);const mc=mvrv<1.5?'bull':mvrv>3.5?'bear':'neutral';
+    set('mvrvVal',mvrv+'x');$('mvrvVal').style.color=col(mc);
+    $('mvrvG').style.width=mp+'%';$('mvrvG').className='gauge-fill '+mc;set('mvrvLbl',mvrv+'x');
+    let s1=mvrv<1.5?78:mvrv>3.5?22:Math.round(78-(mvrv-1.5)/2*56);
+    if(dom>55)s1+=8;if(dom<45)s1-=8;
+    S.oc1=Math.max(10,Math.min(90,s1));setCls('oc1Sig',cls(S.oc1));set('oc1Sig',label(S.oc1));
+    set('oc1Hint',`MVRV估算${mvrv}x · ${mc==='bull'?'历史低估区，看多信号':mc==='bear'?'历史高估区，注意止盈':'中性区间'} · BTC占比${dom.toFixed(1)}%`);
+    const halvDate=new Date('2024-04-20');const months=Math.floor((Date.now()-halvDate.getTime())/864e5/30);const inW=months>=6&&months<=18;
+    set('halvPos','减半后第 '+months+' 个月');$('halvStatus').textContent=inW?'🟢 历史牛市核心窗口':'📊 等待动能';$('halvStatus').style.color=inW?'var(--bull)':'var(--muted)';
+    const p7=d.price_change_percentage_7d,p30=d.price_change_percentage_30d;
+    set('p7d',pct(p7));$('p7d').style.color=p7>=0?'var(--bull)':'var(--bear)';
+    set('p30d',pct(p30));$('p30d').style.color=p30>=0?'var(--bull)':'var(--bear)';
+    set('supply',(d.circulating_supply/1e6).toFixed(2)+'M ('+(d.circulating_supply/21e6*100).toFixed(1)+'%)');
+    set('fromAth',pct(ap));$('fromAth').style.color=ap>=-10?'var(--bull)':ap>=-25?'var(--neutral)':'var(--muted)';
+    let s2=50;if(inW)s2+=14;if(p7>8)s2+=10;else if(p7<-8)s2-=10;if(p30>15)s2+=10;else if(p30<-15)s2-=10;if(ap>=-10)s2+=6;
+    S.oc2=Math.max(10,Math.min(90,Math.round(s2)));setCls('oc2Sig',cls(S.oc2));set('oc2Sig',label(S.oc2));
+    set('oc2Hint',`7D ${pct(p7)} · 30D ${pct(p30)} · ${inW?'减半后牛市窗口，偏多':'不在核心牛市窗口，谨慎'}`);
+    if($('jPrice')&&!$('jPrice').value)$('jPrice').value=_price.toFixed(0);
     updateOverall();
-  } catch(e){
-    console.error('BTC error:',e);
-    toast('BTC数据加载失败，稍后重试');
-  }
+  }catch(e){console.error('BTC:',e);}
 }
 
-// ═══════════════════════════════════════════
-// LOAD: FEAR & GREED (Alternative.me — CORS OK)
-// ═══════════════════════════════════════════
+// ═══ FEAR & GREED ═══
 async function loadFNG(){
   try{
-    const r = await fetch('https://api.alternative.me/fng/?limit=1',{cache:'no-store'});
-    const d = await r.json();
-    const v = parseInt(d.data[0].value);
-    const lbl = d.data[0].value_classification;
-    const c   = v<=25?'bull':v>=75?'bear':'neutral';
-    set('fngVal',v+' — '+lbl);
-    $('fngVal').style.color = col(c);
-    $('fngG').style.width = v+'%';
-    $('fngG').className   = 'gauge-fill '+c;
-    set('fngLbl',v);
-
-    // adjust oc1
-    let bonus=0;
-    if(v<=20) bonus=15; else if(v<=35) bonus=8;
-    else if(v>=80) bonus=-18; else if(v>=65) bonus=-8;
-    S.oc1 = Math.max(10,Math.min(90,S.oc1+bonus));
-    updateOverall();
-  } catch(e){ console.warn('FNG warn:',e); }
+    const d=(await(await fetch('https://api.alternative.me/fng/?limit=1',{cache:'no-store'})).json()).data[0];
+    const v=parseInt(d.value);const c=v<=25?'bull':v>=75?'bear':'neutral';
+    set('fngVal',v+' — '+d.value_classification);$('fngVal').style.color=col(c);
+    $('fngG').style.width=v+'%';$('fngG').className='gauge-fill '+c;set('fngLbl',v);
+    let b=0;if(v<=20)b=15;else if(v<=35)b=8;else if(v>=80)b=-18;else if(v>=65)b=-8;
+    S.oc1=Math.max(10,Math.min(90,S.oc1+b));updateOverall();
+  }catch(e){console.warn('FNG:',e);}
 }
 
-// ═══════════════════════════════════════════
-// LOAD: DXY & Treasury via public proxies (CORS-safe)
-// ═══════════════════════════════════════════
-async function loadMarketData(){
-  // Use Yahoo Finance via allorigins proxy for DXY (DX-Y.NYB) and TNX (10Y)
-  // allorigins is a public CORS proxy
+// ═══ MACRO ═══
+async function loadMacro(){
   try{
-    const PROXY = 'https://api.allorigins.win/get?url=';
-
-    // 10Y Treasury yield — Yahoo Finance TNX
-    const tsyUrl = PROXY + encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX?interval=1d&range=1d');
-    const tsyR = await fetch(tsyUrl,{cache:'no-store'});
-    const tsyJ = await tsyR.json();
-    const tsyD = JSON.parse(tsyJ.contents);
-    const tsy  = tsyD.chart?.result?.[0]?.meta?.regularMarketPrice;
-    if(tsy){
-      set('tsy10y', tsy.toFixed(2)+'%');
-      const tsyC = tsy>4.5?'bear':tsy<3?'bull':'neutral';
-      $('tsy10y').style.color = col(tsyC);
-      const tsyImpEl=$('tsyImp');
-      if(tsyImpEl){
-        tsyImpEl.textContent=tsy>4.5?'⚠ 高实际收益压BTC':tsy<3?'✓ 低收益利好风险资产':'◆ 中性区间';
-        tsyImpEl.style.color=col(tsyC);
-      }
-    }
-
-    // DXY — Yahoo Finance DX-Y.NYB
-    const dxyUrl = PROXY + encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB?interval=1d&range=1d');
-    const dxyR = await fetch(dxyUrl,{cache:'no-store'});
-    const dxyJ = await dxyR.json();
-    const dxyD = JSON.parse(dxyJ.contents);
-    const dxy  = dxyD.chart?.result?.[0]?.meta?.regularMarketPrice;
-    if(dxy){
-      set('dxyVal', dxy.toFixed(1));
-      const dxyC = dxy>105?'bear':dxy<100?'bull':'neutral';
-      $('dxyVal').style.color = col(dxyC);
-      const dxyImpEl=$('dxyImp');
-      if(dxyImpEl){
-        dxyImpEl.textContent=dxy>105?'⚠ 美元强势，BTC承压':dxy<100?'✓ 美元弱势，BTC利好':'◆ 中性区间';
-        dxyImpEl.style.color=col(dxyC);
-      }
-
-      // Score macDxy
-      const dxyScore = dxy<100?70:dxy>106?32:50;
-      const tsyScore2 = tsy ? (tsy<3?70:tsy>4.5?30:50) : 50;
-      S.macDxy = Math.max(10,Math.min(90,Math.round((dxyScore+tsyScore2+66+70)/4)));
-      const cd=cls(S.macDxy); set('macDxySig',label(S.macDxy)); setCls('macDxySig',cd);
-    }
-
-    // Score macFed (static-based since rate doesn't change often)
-    S.macFed = 46; // 4.25-4.50% rate = neutral-bearish
-    const cf=cls(S.macFed); set('macFedSig',label(S.macFed)); setCls('macFedSig',cf);
-
-    updateOverall();
-  } catch(e){
-    console.warn('Market data warn:',e);
-    // Fallback to static
-    set('tsy10y','4.25%');
-    set('dxyVal','104');
-    $('tsy10y').style.color='var(--neutral)';
-    $('dxyVal').style.color='var(--neutral)';
-    const tsyImpEl=$('tsyImp'); if(tsyImpEl){tsyImpEl.textContent='⚠ 实际收益率偏高';tsyImpEl.style.color='var(--neutral)';}
-    const dxyImpEl=$('dxyImp'); if(dxyImpEl){dxyImpEl.textContent='⚠ 美元偏强，短期承压';dxyImpEl.style.color='var(--neutral)';}
-    S.macDxy=52; S.macFed=46;
-    set('macFedSig',label(S.macFed)); setCls('macFedSig',cls(S.macFed));
-    set('macDxySig',label(S.macDxy)); setCls('macDxySig',cls(S.macDxy));
-    updateOverall();
+    const P='https://api.allorigins.win/get?url=';
+    const[tr,dr]=await Promise.all([
+      fetch(P+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX?interval=1d&range=1d'),{cache:'no-store'}),
+      fetch(P+encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB?interval=1d&range=1d'),{cache:'no-store'})
+    ]);
+    const tsy=JSON.parse((await tr.json()).contents).chart?.result?.[0]?.meta?.regularMarketPrice;
+    const dxy=JSON.parse((await dr.json()).contents).chart?.result?.[0]?.meta?.regularMarketPrice;
+    if(tsy){const c=tsy>4.5?'bear':tsy<3?'bull':'neutral';set('tsy10y',tsy.toFixed(2)+'%');$('tsy10y').style.color=col(c);$('tsyImp').textContent=tsy>4.5?'⚠ 高收益压BTC':tsy<3?'✓ 利好风险资产':'◆ 中性';$('tsyImp').style.color=col(c);}
+    if(dxy){const c=dxy>105?'bear':dxy<100?'bull':'neutral';set('dxyVal',dxy.toFixed(1));$('dxyVal').style.color=col(c);$('dxyImp').textContent=dxy>105?'⚠ 美元强，BTC压':dxy<100?'✓ 美元弱，BTC利好':'◆ 中性';$('dxyImp').style.color=col(c);
+    const ds=dxy<100?70:dxy>106?32:50;const ts=tsy?(tsy<3?70:tsy>4.5?30:50):50;S.macDxy=Math.max(10,Math.min(90,Math.round((ds+ts+66+70)/4)));}
+    S.macFed=46;setCls('macFedSig',cls(S.macFed));set('macFedSig',label(S.macFed));setCls('macDxySig',cls(S.macDxy));set('macDxySig',label(S.macDxy));updateOverall();
+  }catch(e){
+    set('tsy10y','4.25%');set('dxyVal','104');$('tsyImp').textContent='⚠ 偏高';$('dxyImp').textContent='⚠ 偏强';
+    S.macDxy=52;S.macFed=46;setCls('macFedSig',cls(S.macFed));set('macFedSig',label(S.macFed));setCls('macDxySig',cls(S.macDxy));set('macDxySig',label(S.macDxy));updateOverall();
   }
 }
 
-// ═══════════════════════════════════════════
-// MAIN
-// ═══════════════════════════════════════════
-async function loadAll(){
-  const btn=$('refreshBtn'), icon=$('refIcon');
-  btn.classList.add('loading');
-  icon.classList.add('spin');
-
-  await Promise.all([loadBTC(), loadFNG(), loadMarketData()]);
-
-  set('lastUpdate','更新于 '+new Date().toLocaleTimeString('zh-CN'));
-  btn.classList.remove('loading');
-  icon.classList.remove('spin');
+// ═══ FUNDING RATE ═══
+async function loadFundingRate(){
+  try{
+    const d=await(await fetch('https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT',{cache:'no-store'})).json();
+    const fr=parseFloat(d.lastFundingRate)*100;
+    set('frVal',fr.toFixed(4)+'%');set('frAnnual','年化约 '+(fr*3*365).toFixed(1)+'%');
+    const fill=$('frBarFill');
+    if(fr>0){fill.style.left='50%';fill.style.width=Math.min(50,(fr/0.1)*50)+'%';fill.style.background='var(--bear)';}
+    else{const w=Math.min(50,(Math.abs(fr)/0.1)*50);fill.style.left=(50-w)+'%';fill.style.width=w+'%';fill.style.background='var(--bull)';}
+    let fc,ft,fs;
+    if(fr>0.08){fc='bear';ft='多头极度拥挤，警惕回调插针';fs=25;}
+    else if(fr>0.04){fc='neutral';ft='多头偏多，注意仓位控制';fs=45;}
+    else if(fr>-0.01){fc='neutral';ft='市场情绪均衡，中性';fs=55;}
+    else if(fr>-0.05){fc='bull';ft='空头偏多，关注反弹机会';fs=65;}
+    else{fc='bull';ft='空头极度拥挤，强反弹信号';fs=80;}
+    set('frSignalText',ft);$('frSignalText').style.color=col(fc);
+    set('frSig',label(fs));setCls('frSig',cls(fs));
+    set('frMini',fr.toFixed(4)+'%');$('frMini').style.color=col(fc);set('frImpact',ft);$('frImpact').style.color=col(fc);
+    window._frScore=fs;updateContractSig();
+  }catch(e){console.warn('FR:',e);}
 }
 
+// ═══ OPEN INTEREST ═══
+async function loadOI(){
+  try{
+    const[or,lr]=await Promise.all([
+      fetch('https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT',{cache:'no-store'}),
+      fetch('https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=BTCUSDT&period=5m&limit=1',{cache:'no-store'})
+    ]);
+    const oi=parseFloat((await or.json()).openInterest);
+    const oiUsd=oi*_price;
+    set('oiVal',fmt(oiUsd)+'  ('+oi.toFixed(0)+' BTC)');
+    let os=50,ot='持仓适中';
+    if(oiUsd>25e9){os=32;ot='持仓量偏高，杠杆风险大';}else if(oiUsd>15e9){os=45;ot='持仓适中，监控变化';}else{os=64;ot='持仓健康，清算风险低';}
+    set('oiRating',ot);$('oiRating').style.color=col(cls(os));
+    set('liqRisk',os>=60?'低风险':'中高风险');$('liqRisk').style.color=col(cls(os));
+    set('oiMini',fmt(oiUsd));$('oiMini').style.color=col(cls(os));set('oiImpact',ot);$('oiImpact').style.color=col(cls(os));
+    const ld=await lr.json();
+    if(ld&&ld[0]){
+      const ls=parseFloat(ld[0].longShortRatio);
+      set('lsRatio',ls.toFixed(3));$('lsRatio').style.color=ls>1.3?'var(--bear)':ls<0.7?'var(--bull)':'var(--neutral)';
+      set('lsDesc',ls>1.3?'多头过度拥挤':ls>1.0?'多头略占优':ls<0.7?'空头过度拥挤':'空头略占优');
+      if(ls<0.7)os+=10;if(ls>1.3)os-=10;
+    }
+    set('oiSig',label(os));setCls('oiSig',cls(os));
+    set('oiHint','OI='+fmt(oiUsd)+' · '+ot+' · 波段建仓避开OI极端高位，防止清算踩踏。');
+    window._oiScore=os;updateContractSig();
+  }catch(e){console.warn('OI:',e);}
+}
+
+function updateContractSig(){
+  const cs=Math.round(((window._frScore??50)+(window._oiScore??50))/2);
+  S.contracts=cs;const cc=cls(cs);
+  set('contractSig',label(cs));setCls('contractSig',cc);
+  set('contractAdvice',cc==='bull'?'空头过度，关注做多':cc==='bear'?'多头拥挤，需谨慎':'情绪均衡，看其他信号');
+  $('contractAdvice').style.color=col(cc);
+  set('contractAdviceDesc',cc==='bull'?'费率和持仓支持做多方向':cc==='bear'?'多头过度拥挤，警惕急跌':'结合链上和宏观综合判断');
+  updateOverall();
+}
+
+// ═══ TECHNICAL ═══
+async function loadTechnical(){
+  try{
+    const[d1r,h4r]=await Promise.all([
+      fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=210',{cache:'no-store'}),
+      fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=4h&limit=60',{cache:'no-store'})
+    ]);
+    const closes=(await d1r.json()).map(k=>parseFloat(k[4]));
+    const h4c=(await h4r.json()).map(k=>parseFloat(k[4]));
+    const ma=(a,n)=>a.slice(-n).reduce((x,y)=>x+y,0)/n;
+    const[ma20,ma50,ma200,cur]=[ma(closes,20),ma(closes,50),ma(closes,200),closes.at(-1)];
+    const mf=(v,vid,pid)=>{
+      const p=((cur-v)/v*100);
+      const e=$(vid);if(e){e.textContent='$'+v.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');e.style.color=cur>v?'var(--bull)':'var(--bear)';}
+      const pe=$(pid);if(pe){pe.textContent=(p>=0?'+':'')+p.toFixed(2)+'% '+(cur>v?'↑上方':'↓下方');pe.style.color=cur>v?'var(--bull)':'var(--bear)';}
+      return p;
+    };
+    mf(ma20,'ma20Val','ma20Pct');mf(ma50,'ma50Val','ma50Pct');mf(ma200,'ma200Val','ma200Pct');
+    const bull20=ma20>ma50&&ma50>ma200,bear20=ma20<ma50&&ma50<ma200;
+    const arr=bull20?'📈 多头排列':bear20?'📉 空头排列':'〰 均线交叉中';
+    set('maArrange',arr);$('maArrange').style.color=bull20?'var(--bull)':bear20?'var(--bear)':'var(--neutral)';
+    let ms=50;if(cur>ma20)ms+=10;else ms-=10;if(cur>ma50)ms+=10;else ms-=10;if(cur>ma200)ms+=10;else ms-=10;if(bull20)ms+=10;else if(bear20)ms-=10;
+    ms=Math.max(10,Math.min(90,ms));
+    const rsi=(a,n=14)=>{
+      let g=0,l=0;for(let i=a.length-n;i<a.length;i++){const d=a[i]-a[i-1];if(d>0)g+=d;else l+=Math.abs(d);}
+      const ag=g/n,al=l/n;return al===0?100:100-(100/(1+(ag/al)));
+    };
+    const rd=rsi(closes),r4=rsi(h4c);
+    set('rsiDVal',rd.toFixed(1));const rc=rd<30?'bull':rd>70?'bear':'neutral';$('rsiDVal').style.color=col(rc);
+    set('rsi4hVal',r4.toFixed(1));$('rsi4hVal').style.color=col(r4<30?'bull':r4>70?'bear':'neutral');
+    $('rsiNeedle').style.left=rd+'%';$('rsiNeedle').style.background=col(rc);
+    const rd2=rd<30?'超卖区，关注反弹':rd<40?'偏低，关注支撑':rd>70?'超买区，谨慎追高':rd>60?'偏高，注意回调':'中性区间';
+    set('rsiDesc',rd2);$('rsiDesc').style.color=col(rc);
+    let rs=50;if(rd<30)rs=75;else if(rd<40)rs=62;else if(rd>70)rs=25;else if(rd>60)rs=38;
+    set('rsiSig',label(rs));setCls('rsiSig',cls(rs));set('rsiHint',`日线RSI ${rd.toFixed(1)} · 4H RSI ${r4.toFixed(1)} · ${rd2}`);
+    set('maSig',label(ms));setCls('maSig',cls(ms));set('maHint',`MA20 $${ma20.toFixed(0)} · MA50 $${ma50.toFixed(0)} · MA200 $${ma200.toFixed(0)} · ${arr}`);
+    const ts2=Math.round((rs+ms)/2);const tc=cls(ts2);
+    set('techSig',label(ts2));setCls('techSig',tc);
+    set('rsiMini',rd.toFixed(1));$('rsiMini').style.color=col(rc);set('rsiMiniDesc',rd2);$('rsiMiniDesc').style.color=col(rc);
+    set('maMini',bull20?'多头排列':bear20?'空头排列':'混合');$('maMini').style.color=col(cls(ms));
+    const d20p=((cur-ma20)/ma20*100);set('maMiniDesc',`价格${d20p>=0?'在':'低于'}MA20 ${Math.abs(d20p).toFixed(1)}%`);$('maMiniDesc').style.color=col(cls(ms));
+    set('techAdvice',tc==='bull'?'技术偏多':tc==='bear'?'技术偏空':'技术中性');$('techAdvice').style.color=col(tc);
+    set('techAdviceDesc',bull20&&rd<60?'均线结构好，RSI未超买，可介入':rd>70?'RSI超买，等回调':'结合多维度综合判断');
+  }catch(e){console.warn('Technical:',e);}
+}
+
+// ═══ JOURNAL ═══
+const getJ=()=>JSON.parse(localStorage.getItem('btcJ')||'[]');
+const saveJ=a=>localStorage.setItem('btcJ',JSON.stringify(a));
+function addEntry(){
+  const body=$('jBody').value.trim();
+  if(!body){toast('请填写判断依据',false);return;}
+  const e={id:Date.now(),dir:$('jDir').value,price:parseFloat($('jPrice').value||_price),sl:$('jSl').value?parseFloat($('jSl').value):null,tp:$('jTp').value?parseFloat($('jTp').value):null,body,tags:$('jTags').value.split(',').map(t=>t.trim()).filter(Boolean),date:new Date().toLocaleString('zh-CN'),snap:{price:_price.toFixed(0),score:$('sigScore').textContent,sig:$('sigTxt').textContent}};
+  const arr=getJ();arr.unshift(e);saveJ(arr);renderJ();
+  $('jBody').value='';$('jTags').value='';$('jSl').value='';$('jTp').value='';
+  toast('笔记已保存 ✓');
+}
+function delEntry(id){saveJ(getJ().filter(e=>e.id!==id));renderJ();}
+function renderJ(){
+  const arr=getJ();const c=$('journalEntries');
+  if(!arr.length){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);font-size:12px">暂无笔记 ↑ 记录你的第一条交易判断</div>';return;}
+  c.innerHTML=arr.map(e=>`<div class="journal-entry"><div class="entry-hdr"><div class="entry-meta"><span class="entry-dir ${e.dir}">${e.dir==='long'?'▲ 做多':e.dir==='short'?'▼ 做空':'📊 观望'}</span><span class="entry-price">$${e.price.toLocaleString()}</span>${e.sl?`<span style="font-size:11px;color:var(--bear)">止损$${e.sl.toLocaleString()}</span>`:''} ${e.tp?`<span style="font-size:11px;color:var(--bull)">止盈$${e.tp.toLocaleString()}</span>`:''}<span class="entry-date">${e.date}</span></div><button class="btn-danger" onclick="delEntry(${e.id})">删除</button></div><div class="entry-body">${e.body.replace(/\n/g,'<br>')}</div>${e.tags.length?`<div class="entry-tags">${e.tags.map(t=>`<span class="entry-tag">${t}</span>`).join('')}</div>`:''}<div class="entry-snapshot">📸 BTC $${parseInt(e.snap.price).toLocaleString()} · 评分${e.snap.score} · ${e.snap.sig}</div></div>`).join('');
+}
+
+// ═══ MAIN ═══
+async function loadAll(){
+  const btn=$('refreshBtn'),icon=$('refIcon');
+  btn.classList.add('loading');icon.classList.add('spin');
+  await Promise.all([loadBTC(),loadFNG(),loadMacro(),loadFundingRate(),loadOI(),loadTechnical()]);
+  set('lastUpdate','更新于 '+new Date().toLocaleTimeString('zh-CN'));
+  btn.classList.remove('loading');icon.classList.remove('spin');
+}
+renderJ();
 loadAll();
-setInterval(loadAll, 5*60*1000);
+setInterval(loadAll,5*60*1000);
 </script>
 </body>
 </html>
